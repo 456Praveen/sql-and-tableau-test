@@ -1,0 +1,84 @@
+1.SELECT carrierId, count(carrierId)
+from flight_detail
+group by carrierId;
+
+2.SELECT carrierId, sum(airtime) 
+from flight_detail
+group by carrierId 
+order by sum(airtime) desc limit 5;
+ 
+3.SELECT carrierId, timediff(ScheduledArrivaltime,Arrivaltime) as arrivaldifference,
+timediff(Scheduleddeparturetime,departuretime) as departuredifference
+from flight_detail
+group by carrierId;
+
+4.select flight_month,sum(departuredelay)
+from flight_detail
+group by flight_month 
+order by sum(departuredelay) desc ;
+
+5.select state_detail.stateId,
+state_detail.state_code,
+sum(flight_detail.flightId),
+sum(flight_detail.carrierId)
+from state_detail 
+left join airport_detail
+on state_detail.stateId = airport_detail.stateId
+left join route_detail
+on airport_detail.stateId = route_detail.route_ID
+left join flight_detail
+on route_detail.route_ID = flight_detail.routeId
+group by state_detail.stateId,
+state_detail.state_code
+order by sum(flight_detail.carrierId) desc limit 15 ;
+
+6.SELECT carrierId,sum(departuredelay)
+from flight_detail
+group by carrierId
+order by sum(departuredelay) asc;
+
+7.SELECT flight_month,flight_date,sum(departuredelay)
+from flight_detail
+group by flight_month,flight_date
+order by sum(departuredelay) asc;
+
+8.SELECT carrierId,arrivaldelay,departuredelay,
+arrivaldelay/sum(arrivaldelay)*100 as arrivadelaypercentage,
+departuredelay/sum(departuredelay)*100 as departuredealaypercentage
+from flight_detail
+group by carrierId;
+
+9.SELECT routeId, sum(departuredelay)
+from flight_detail
+group by routeId
+order by sum(departuredelay) desc;
+
+10.SELECT dayweek,sum(departuredelay)
+from flight_detail
+group by dayweek
+order by sum(departuredelay) desc;
+
+11.SELECT flight_date,Scheduleddeparturetime,sum(departuredelay)
+from flight_detail
+group by Scheduleddeparturetime 
+order by sum(departuredelay) desc;
+
+12.SELECT max(taxiIn),min(taxiIn),avg(taxiIn),
+max(taxiOut),min(taxiOut),avg(taxiOut)
+from flight_detail;
+
+13.SELECT route_detail.origincode,route_detail.destinationcode,max(flight_detail.FlightId)
+from route_detail
+left join flight_detail
+on route_detail.route_ID = flight_detail.routeId
+group by route_detail.origincode,route_detail.destinationcode
+order by max(flight_detail.FlightId) desc;
+
+14.SELECT max(arrivaldelay),max(departuredelay)
+from flight_detail;
+
+15'SELECT 
+distinct carrierId,speed
+from flight_detail
+where speed between '400' and '600'
+order by speed desc ;
